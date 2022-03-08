@@ -5634,7 +5634,9 @@ function Dashboard(props) {
       setParams = _useState4[1];
 
   var reload = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((0,lodash__WEBPACK_IMPORTED_MODULE_3__.debounce)(function (query) {
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia.get(route('users.index'), (0,lodash__WEBPACK_IMPORTED_MODULE_3__.pickBy)(query), {
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia.get(route('users.index'), _objectSpread(_objectSpread({}, (0,lodash__WEBPACK_IMPORTED_MODULE_3__.pickBy)(query)), {}, {
+      page: query.search ? 1 : query.page
+    }), {
       preserveState: true
     });
   }, 150), []);
@@ -5644,7 +5646,7 @@ function Dashboard(props) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var numbers = [];
 
-    for (var i = attributes.per_page; i <= meta.total / attributes.per_page; i = i + attributes.per_page) {
+    for (var i = attributes.per_page; i <= attributes.total / attributes.per_page; i = i + attributes.per_page) {
       numbers.push(i);
     }
 
@@ -5671,18 +5673,42 @@ function Dashboard(props) {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "flex items-center justify-end",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-            className: "w-auto mb-5",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("select", {
-              name: "load",
-              id: "load",
-              onChange: onChange,
-              value: params.load,
-              className: "form-select rounded-lg",
-              children: pageNumber.map(function (page, index) {
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
-                  children: page
-                }, index);
-              })
+            className: "w-1/2 mb-5",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+              className: "flex items-center justify-end gap-x-2 mb-3",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("select", {
+                name: "load",
+                id: "load",
+                onChange: onChange,
+                value: params.load,
+                className: "form-select rounded-lg border-gray-300 focus:ring-blue-300 focus:ring transition duration-150 ease-in",
+                children: pageNumber.map(function (page, index) {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
+                    children: page
+                  }, index);
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                className: "flex items-center gap-x-2 rounded-lg border-gray-300 focus-within:ring-blue-300 focus-within:ring border focus-within:border-blue-400 bg-white px-2 transition duration-150 ease-in",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("svg", {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  className: "h-5 w-5 inline text-gray-500",
+                  viewBox: "0 0 20 20",
+                  fill: "currentColor",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("path", {
+                    fillRule: "evenodd",
+                    d: "M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z",
+                    clipRule: "evenodd"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                  "class": "form-text w-full border-0 focus:ring-0",
+                  placeholder: "Search for anything...",
+                  type: "text",
+                  name: "search",
+                  id: "search",
+                  onChange: onChange,
+                  value: params.search
+                })]
+              })]
             })
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
@@ -5760,14 +5786,15 @@ function Dashboard(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("ul", {
           className: "flex items-center gap-x-1 mt-5 justify-center",
           children: meta.links.map(function (item, index) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
               disabled: item.url == null ? true : false,
-              as: "button",
               className: "".concat((item.url == null ? 'text-gray-400 cursor-default' : 'text-gray-800 ', item.active == true ? 'bg-gray-300 border-gray-500' : ''), " w-12 h-9 rounded-lg flex items-center justify-center border bg-white"),
-              href: item.url || '',
-              dangerouslySetInnerHTML: {
-                __html: item.label
-              }
+              onClick: function onClick() {
+                return setParams(_objectSpread(_objectSpread({}, params), {}, {
+                  page: new URL(item.url).searchParams.get('page')
+                }));
+              },
+              children: item.label
             });
           })
         })]

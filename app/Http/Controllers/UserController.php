@@ -12,15 +12,24 @@ class UserController extends Controller
 
    public function index(Request $request)
    {
+      $query = User::query();
+      if ($request->search) {
+         $query->where('name', 'like', "%{$request->search}%")
+            ->orWhere('email', 'like', "%{$request->search}%")
+            ->orWhere('username', 'like', "%{$request->search}%");
+      }
+
       $users = (
-         UserResource::collection(User::paginate($request->load))
+         UserResource::collection($query->paginate($request->load))
       )->additional([
          'attributes' => [
             'total'    => User::count(),
             'per_page' => 10,
          ],
          'filtered'   => [
-            'load' => $request->load ?? $this->loadDefault,
+            'load'   => $request->load ?? $this->loadDefault,
+            'search' => $request->search ?? '',
+            'page'   => $request->page ?? 1,
          ]]
       );
 

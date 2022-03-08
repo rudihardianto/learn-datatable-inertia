@@ -10,16 +10,20 @@ export default function Dashboard(props) {
   const [params, setParams] = useState(filtered);
   const reload = useCallback(
     debounce((query) => {
-      Inertia.get(route('users.index'), pickBy(query), {
-        preserveState: true,
-      });
+      Inertia.get(
+        route('users.index'),
+        { ...pickBy(query), page: query.search ? 1 : query.page },
+        {
+          preserveState: true,
+        }
+      );
     }, 150),
     []
   );
   useEffect(() => reload(params), [params]);
   useEffect(() => {
     let numbers = [];
-    for (let i = attributes.per_page; i <= meta.total / attributes.per_page; i = i + attributes.per_page) {
+    for (let i = attributes.per_page; i <= attributes.total / attributes.per_page; i = i + attributes.per_page) {
       numbers.push(i);
     }
     setPageNumber(numbers);
@@ -33,17 +37,46 @@ export default function Dashboard(props) {
 
       <div className="py-10">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          {/* START: Select Form */}
           <div className="flex items-center justify-end">
-            <div className="w-auto mb-5">
-              <select name="load" id="load" onChange={onChange} value={params.load} className="form-select rounded-lg">
-                {pageNumber.map((page, index) => (
-                  <option key={index}>{page}</option>
-                ))}
-              </select>
+            <div className="w-1/2 mb-5">
+              <div className="flex items-center justify-end gap-x-2 mb-3">
+                {/* START: Select Form */}
+                <select
+                  name="load"
+                  id="load"
+                  onChange={onChange}
+                  value={params.load}
+                  className="form-select rounded-lg border-gray-300 focus:ring-blue-300 focus:ring transition duration-150 ease-in"
+                >
+                  {pageNumber.map((page, index) => (
+                    <option key={index}>{page}</option>
+                  ))}
+                </select>
+                {/* END: Select Form */}
+
+                {/* START: Search */}
+                <div className="flex items-center gap-x-2 rounded-lg border-gray-300 focus-within:ring-blue-300 focus-within:ring border focus-within:border-blue-400 bg-white px-2 transition duration-150 ease-in">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <input
+                    class="form-text w-full border-0 focus:ring-0"
+                    placeholder="Search for anything..."
+                    type="text"
+                    name="search"
+                    id="search"
+                    onChange={onChange}
+                    value={params.search}
+                  />
+                </div>
+                {/* END: Search */}
+              </div>
             </div>
           </div>
-          {/* END: Select Form */}
 
           <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -92,15 +125,15 @@ export default function Dashboard(props) {
 
           <ul className="flex items-center gap-x-1 mt-5 justify-center">
             {meta.links.map((item, index) => (
-              <Link
+              <button
                 disabled={item.url == null ? true : false}
-                as="button"
                 className={`${
                   (item.url == null ? 'text-gray-400 cursor-default' : 'text-gray-800 ', item.active == true ? 'bg-gray-300 border-gray-500' : '')
                 } w-12 h-9 rounded-lg flex items-center justify-center border bg-white`}
-                href={item.url || ''}
-                dangerouslySetInnerHTML={{ __html: item.label }}
-              />
+                onClick={() => setParams({ ...params, page: new URL(item.url).searchParams.get('page') })}
+              >
+                {item.label}
+              </button>
             ))}
           </ul>
         </div>
