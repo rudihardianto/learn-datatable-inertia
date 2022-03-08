@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserCollection extends ResourceCollection
@@ -12,10 +13,22 @@ class UserCollection extends ResourceCollection
     * @param  \Illuminate\Http\Request  $request
     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
     */
+
    public function toArray($request)
    {
       return [
-         'data' => $this->collection,
+         'data'       => $this->collection,
+         'attributes' => [
+            'total'    => User::count(),
+            'per_page' => 10,
+         ],
+         'filtered'   => [
+            'load'      => $request->load ?? '',
+            'search'    => $request->search ?? '',
+            'page'      => $request->page ?? 1,
+            'field'     => $request->field ?? '',
+            'direction' => $request->direction ?? '',
+         ],
       ];
    }
 }
