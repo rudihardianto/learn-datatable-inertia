@@ -15,6 +15,7 @@ export default function Dashboard(props) {
         { ...pickBy(query), page: query.search ? 1 : query.page },
         {
           preserveState: true,
+          preserveScroll: true,
         }
       );
     }, 150),
@@ -30,6 +31,13 @@ export default function Dashboard(props) {
   }, []);
 
   const onChange = (e) => setParams({ ...params, [e.target.name]: e.target.value });
+  const sort = (item) => {
+    setParams({
+      ...params,
+      field: item,
+      direction: params.direction == 'asc' ? 'desc' : 'asc',
+    });
+  };
 
   return (
     <Authenticated auth={props.auth} errors={props.errors} header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Users</h2>}>
@@ -64,7 +72,7 @@ export default function Dashboard(props) {
                     />
                   </svg>
                   <input
-                    class="form-text w-full border-0 focus:ring-0"
+                    className="form-text w-full border-0 focus:ring-0"
                     placeholder="Search for anything..."
                     type="text"
                     name="search"
@@ -85,26 +93,83 @@ export default function Dashboard(props) {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
+                        {/* No */}
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           #
                         </th>
+
+                        {/* Username */}
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Username
+                          <div className="cursor-pointer flex items-center gap-x-2" onClick={() => sort('username')}>
+                            Username
+                            {params.direction == 'asc' ? (
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                              </svg>
+                            ) : (
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                              </svg>
+                            )}
+                          </div>
                         </th>
+
+                        {/* Name */}
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Name
+                          <div className="cursor-pointer flex items-center gap-x-2" onClick={() => sort('name')}>
+                            Name
+                            {params.direction == 'asc' ? (
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                              </svg>
+                            ) : (
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                              </svg>
+                            )}
+                          </div>
                         </th>
+
+                        {/* Email */}
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Email
+                          <div className="cursor-pointer flex items-center gap-x-2" onClick={() => sort('email')}>
+                            Email
+                            {params.direction == 'asc' ? (
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                              </svg>
+                            ) : (
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                              </svg>
+                            )}
+                          </div>
                         </th>
+
+                        {/* Joined */}
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Joined
+                          <div className="cursor-pointer flex items-center gap-x-2" onClick={() => sort('created_at')}>
+                            Joined
+                            {params.direction == 'asc' ? (
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                              </svg>
+                            ) : (
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                              </svg>
+                            )}
+                          </div>
                         </th>
+
+                        {/* Action */}
                         <th scope="col" className="relative px-6 py-3">
                           <span className="sr-only">Edit</span>
                         </th>
                       </tr>
                     </thead>
+
+                    {/* START: Query Data */}
                     <tbody className="bg-white divide-y divide-gray-200">
                       {people.map((person, index) => (
                         <tr key={person.email}>
@@ -117,15 +182,18 @@ export default function Dashboard(props) {
                         </tr>
                       ))}
                     </tbody>
+                    {/* END: Query Data */}
                   </table>
                 </div>
               </div>
             </div>
           </div>
 
+          {/* START: Pagination */}
           <ul className="flex items-center gap-x-1 mt-5 justify-center">
             {meta.links.map((item, index) => (
               <button
+                key={index}
                 disabled={item.url == null ? true : false}
                 className={`${
                   (item.url == null ? 'text-gray-400 cursor-default' : 'text-gray-800 ', item.active == true ? 'bg-gray-300 border-gray-500' : '')
@@ -136,6 +204,7 @@ export default function Dashboard(props) {
               </button>
             ))}
           </ul>
+          {/* END: Pagination */}
         </div>
       </div>
     </Authenticated>

@@ -5637,7 +5637,8 @@ function Dashboard(props) {
     _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia.get(route('users.index'), _objectSpread(_objectSpread({}, (0,lodash__WEBPACK_IMPORTED_MODULE_3__.pickBy)(query)), {}, {
       page: query.search ? 1 : query.page
     }), {
-      preserveState: true
+      preserveState: true,
+      preserveScroll: true
     });
   }, 150), []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -5655,6 +5656,13 @@ function Dashboard(props) {
 
   var onChange = function onChange(e) {
     return setParams(_objectSpread(_objectSpread({}, params), {}, _defineProperty({}, e.target.name, e.target.value)));
+  };
+
+  var sort = function sort(item) {
+    setParams(_objectSpread(_objectSpread({}, params), {}, {
+      field: item,
+      direction: params.direction == 'asc' ? 'desc' : 'asc'
+    }));
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_Layouts_Authenticated__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -5700,7 +5708,7 @@ function Dashboard(props) {
                     clipRule: "evenodd"
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
-                  "class": "form-text w-full border-0 focus:ring-0",
+                  className: "form-text w-full border-0 focus:ring-0",
                   placeholder: "Search for anything...",
                   type: "text",
                   name: "search",
@@ -5731,19 +5739,139 @@ function Dashboard(props) {
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
                         scope: "col",
                         className: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                        children: "Username"
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                          className: "cursor-pointer flex items-center gap-x-2",
+                          onClick: function onClick() {
+                            return sort('username');
+                          },
+                          children: ["Username", params.direction == 'asc' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("svg", {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            className: "h-5 w-4",
+                            fill: "none",
+                            viewBox: "0 0 24 24",
+                            stroke: "currentColor",
+                            strokeWidth: 2,
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("path", {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              d: "M19 9l-7 7-7-7"
+                            })
+                          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("svg", {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            className: "h-5 w-4",
+                            fill: "none",
+                            viewBox: "0 0 24 24",
+                            stroke: "currentColor",
+                            strokeWidth: 2,
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("path", {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              d: "M5 15l7-7 7 7"
+                            })
+                          })]
+                        })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
                         scope: "col",
                         className: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                        children: "Name"
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                          className: "cursor-pointer flex items-center gap-x-2",
+                          onClick: function onClick() {
+                            return sort('name');
+                          },
+                          children: ["Name", params.direction == 'asc' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("svg", {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            className: "h-5 w-4",
+                            fill: "none",
+                            viewBox: "0 0 24 24",
+                            stroke: "currentColor",
+                            strokeWidth: 2,
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("path", {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              d: "M19 9l-7 7-7-7"
+                            })
+                          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("svg", {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            className: "h-5 w-4",
+                            fill: "none",
+                            viewBox: "0 0 24 24",
+                            stroke: "currentColor",
+                            strokeWidth: 2,
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("path", {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              d: "M5 15l7-7 7 7"
+                            })
+                          })]
+                        })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
                         scope: "col",
                         className: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                        children: "Email"
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                          className: "cursor-pointer flex items-center gap-x-2",
+                          onClick: function onClick() {
+                            return sort('email');
+                          },
+                          children: ["Email", params.direction == 'asc' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("svg", {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            className: "h-5 w-4",
+                            fill: "none",
+                            viewBox: "0 0 24 24",
+                            stroke: "currentColor",
+                            strokeWidth: 2,
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("path", {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              d: "M19 9l-7 7-7-7"
+                            })
+                          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("svg", {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            className: "h-5 w-4",
+                            fill: "none",
+                            viewBox: "0 0 24 24",
+                            stroke: "currentColor",
+                            strokeWidth: 2,
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("path", {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              d: "M5 15l7-7 7 7"
+                            })
+                          })]
+                        })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
                         scope: "col",
                         className: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                        children: "Joined"
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                          className: "cursor-pointer flex items-center gap-x-2",
+                          onClick: function onClick() {
+                            return sort('created_at');
+                          },
+                          children: ["Joined", params.direction == 'asc' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("svg", {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            className: "h-5 w-4",
+                            fill: "none",
+                            viewBox: "0 0 24 24",
+                            stroke: "currentColor",
+                            strokeWidth: 2,
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("path", {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              d: "M19 9l-7 7-7-7"
+                            })
+                          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("svg", {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            className: "h-5 w-4",
+                            fill: "none",
+                            viewBox: "0 0 24 24",
+                            stroke: "currentColor",
+                            strokeWidth: 2,
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("path", {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              d: "M5 15l7-7 7 7"
+                            })
+                          })]
+                        })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
                         scope: "col",
                         className: "relative px-6 py-3",
@@ -5795,7 +5923,7 @@ function Dashboard(props) {
                 }));
               },
               children: item.label
-            });
+            }, index);
           })
         })]
       })

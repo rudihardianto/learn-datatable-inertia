@@ -790,6 +790,9 @@ select {
 .w-1\/2 {
   width: 50%;
 }
+.w-3 {
+  width: 0.75rem;
+}
 .min-w-full {
   min-width: 100%;
 }
@@ -832,6 +835,9 @@ select {
 }
 .cursor-default {
   cursor: default;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .list-inside {
   list-style-position: inside;
